@@ -13,25 +13,30 @@
     <h1>Weather Dashboard</h1>
 </header>
 <body>
-    <section class="city-search col-4">
-        <h2>Search for a City:</h2>
-        <input type="text" name="city-search" class="search-bar col-8" id="search-bar">
-        <button type="button" class="col-3" id="search-btn">Search</button>
-        <article class="city-history" id="city-history">
-            <!-- City history names populate as buttons here-->
-        </article>
-    </section>
+    <article class="full-board row align-items-start">
+        <section class="city-search col-3">
+            <h2>Search for a City:</h2>
+            <input type="text" name="city-search" class="search-bar col-8" id="search-bar">
+            <button type="button" class="btn btn-primary col-3" id="search-btn">Search</button>
+            <article class="city-history d-grid gap-5" id="city-history">
+                <!-- City history names populate as buttons here-->
+            </article>
+        </section>
 
-    <section class="details-board">
-        <!-- Populate city information here-->
-    </section>
+        <article class="column col-9">
+            <div class="details-board col-11 ">
+                <!-- Populate city information here-->
+            </div>  
+            <div class="forecast-board col-11">
+                <H2 class="forecast-title">5-Day Forecast</H2>
+                <ul class="forecast-cards container row align-items-start" id="forecast-cards">
+                    <!-- Populate forecast cards here-->
+                </ul>
+            </div>
+        </article>    
 
-    <section class="forecast-board">
-        <H2 class="forecast-title">5-Day Forecast</H2>
-        <ul class="forecast-cards">
-            <!-- Populate forecast cards here-->
-        </ul>
-    </section>
+        
+    </article>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./assets/js/script.js"></script>

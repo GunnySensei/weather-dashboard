@@ -24,6 +24,42 @@ body{
     text-shadow: 1px 1px 2px black;
 }
 
-.city-history {
+.full-board {
+    border: 5px, solid, black;
+    height: 50%;
+}
+
+.details-board {
+    border: 3px solid black;
+    height: 50vh;
+}
+
+.forecast-board {
+    height: 50vh;
+    padding: 0;
+}
+
+.forecast-board ul li {
+    list-style-type: none;
+    margin: 10px;
+    height: 30vh;
+}
+
+.city-search {
     flex-direction: column;
+    height: 100vh;
+    text-align: center;
+}
+
+.city-search h2 {
+    margin-left: 10px;
+}
+
+.search-bar {
+    margin-left: 10px;
+    margin-bottom: 50px;
+}
+
+.city-history {
+    margin-left: 10px;
 }
