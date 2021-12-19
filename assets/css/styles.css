@@ -21,7 +21,6 @@ body{
 }
 
 .jumbotron h1 {
-    text-shadow: 1px 1px 2px black;
 }
 
 .full-board {
@@ -42,7 +41,6 @@ body{
 .forecast-board ul li {
     list-style-type: none;
     margin: 10px;
-    height: 30vh;
     border: 2px solid black;
 }
 

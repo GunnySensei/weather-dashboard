@@ -5,10 +5,14 @@ var cityHistoryBtnsArr = []
 var cityInput = $('#search-bar');
 
 
+
 var populateCityHistory = function (cityName) {
-  for (var i = 0; i < 5; i++) {
+  $(".city-history-btns").remove();
+  console.log(cityHistoryBtnsArr);
+  cityHistoryBtnsArr.push(cityName);
+  for (var i = 0; i < cityHistoryBtnsArr.length; i++) {
     var cityHistoryBtns = $('<button></button>')
-      .text('Enter City Here')
+      .text(cityHistoryBtnsArr[i])
       .attr("id", 'city-history-btn' + i)
       .addClass("city-history-btns btn btn-secondary col-9 p-2")
     cityHistory.append(cityHistoryBtns);
@@ -16,6 +20,9 @@ var populateCityHistory = function (cityName) {
 }
 
 var printCurrentWeather = function (cityName, currentTemp, currentWind, currentHumidity, currentWeatherType) {
+  var detailsChildren = detailsBoard.children()
+  detailsChildren.remove();
+  
   var cityNamePrint = $('<h2>' + cityName + '</h2>')
     .addClass("city-name")
   var currentTempPrint = $('<h3>Current Temperature: ' + currentTemp + "</h3>")
@@ -51,6 +58,7 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
 var getLocation = function(cityInput) {
   console.log(cityInput.val());
   var cityName = cityInput.val();
+  populateCityHistory(cityName);
   fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
   .then(response => {
     return response.json()
@@ -68,7 +76,6 @@ var getLocation = function(cityInput) {
 
 var getData = function (lat,lon,cityNameData) {
   console.log("got data");
-
 
 
   fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly&units=imperial&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
@@ -104,41 +111,43 @@ var getData = function (lat,lon,cityNameData) {
     })
 }
 
-var createForecastCards = function (finalDate, currentTemp, currentWind, currentHumidity, currentWeatherType) {
-    var cardContainer = $('<li class="col">')
-      .addClass("card-container")
-    var date = $('<strong>' + finalDate + '</strong>')
-      .addClass("city-name")
-    var dailyTempPrint = $('<p>Temperature: ' + currentTemp + "</p>")
-      .addClass("current-temp")
-    var dailyWindPrint = $('<p>Wind Speed: ' + currentWind + "</p>")
-      .addClass("current-wind")
-    var dailyHumidityPrint = $('<p>Humidity: ' + currentHumidity + "</p>")
-      .addClass("current-humidity")
-    var dailyWeatherTypePrint = $('<p>' + currentWeatherType + "</p>")
-      .addClass("current-weather-type")
-      .attr("id", "current-weather-type")
+var createForecastCards = function (finalDate, currentTemp, currentWind, currentHumidity, currentWeatherType, containerChildren, cardContainer) {
 
-    if (currentWeatherType == "Clouds") {
-      console.log("cloudy")
-      var cloudyIcon = $('<ion-icon name="cloudy-outline"></ion-icon>')
-      dailyWeatherTypePrint.append(cloudyIcon);
-    } else if (currentWeatherType == "Rain") {
-      var rainIcon = $('<ion-icon name="rainy-outline"></ion-icon>')
-      dailyWeatherTypePrint.append(rainIcon);
-    } else if (currentWeatherType == "Clear") {
-      var clearIcon = $('<ion-icon name="sunny-outline"></ion-icon>')
-      dailyWeatherTypePrint.append(clearIcon);
-    } else {
-      var otherIcon = $('<ion-icon name="partly-sunny-outline"></ion-icon>')
-      dailyWeatherTypePrint.append(otherIcon);
-    }
-    cardContainer.append(date, dailyTempPrint, dailyWindPrint, dailyHumidityPrint, dailyWeatherTypePrint);
-    forecastCardsSection.append(cardContainer);
+  var cardContainer = $('<li class="col">')
+    .addClass("card-container")
+  var date = $('<strong>' + finalDate + '</strong>')
+    .addClass("city-name")
+  var dailyTempPrint = $('<p>Temperature: ' + currentTemp + "</p>")
+    .addClass("current-temp")
+  var dailyWindPrint = $('<p>Wind Speed: ' + currentWind + "</p>")
+    .addClass("current-wind")
+  var dailyHumidityPrint = $('<p>Humidity: ' + currentHumidity + "</p>")
+    .addClass("current-humidity")
+  var dailyWeatherTypePrint = $('<p>' + currentWeatherType + "</p>")
+    .addClass("current-weather-type")
+    .attr("id", "current-weather-type")
+
+  if (currentWeatherType == "Clouds") {
+    console.log("cloudy")
+    var cloudyIcon = $('<ion-icon name="cloudy-outline"></ion-icon>')
+    dailyWeatherTypePrint.append(cloudyIcon);
+  } else if (currentWeatherType == "Rain") {
+    var rainIcon = $('<ion-icon name="rainy-outline"></ion-icon>')
+    dailyWeatherTypePrint.append(rainIcon);
+  } else if (currentWeatherType == "Clear") {
+    var clearIcon = $('<ion-icon name="sunny-outline"></ion-icon>')
+    dailyWeatherTypePrint.append(clearIcon);
+  } else {
+    var otherIcon = $('<ion-icon name="partly-sunny-outline"></ion-icon>')
+    dailyWeatherTypePrint.append(otherIcon);
+  }
+  cardContainer.append(date, dailyTempPrint, dailyWindPrint, dailyHumidityPrint, dailyWeatherTypePrint);
+  forecastCardsSection.append(cardContainer);
   }
 
-populateCityHistory();
 
 $("#search-btn").on("click", function() {
+  $(".card-container").remove();
   getLocation(cityInput);
+  
 });
