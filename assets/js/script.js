@@ -2,8 +2,7 @@ var cityHistory = $("#city-history")
 var forecastCardsSection = $("#forecast-cards")
 var detailsBoard = $("#details-board")
 var cityHistoryBtnsArr = []
-var cityName = "nashville";
-
+var cityInput = $('#search-bar');
 
 
 var populateCityHistory = function (cityName) {
@@ -49,7 +48,9 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
 }
 
 
-var getLocation = function(cityName) {
+var getLocation = function(cityInput) {
+  console.log(cityInput.val());
+  var cityName = cityInput.val();
   fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
   .then(response => {
     return response.json()
@@ -139,5 +140,5 @@ var createForecastCards = function (finalDate, currentTemp, currentWind, current
 populateCityHistory();
 
 $("#search-btn").on("click", function() {
-  getLocation(cityName);
+  getLocation(cityInput);
 });
