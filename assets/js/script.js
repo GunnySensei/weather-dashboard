@@ -9,14 +9,16 @@ var cityInput = $('#search-bar');
 var populateCityHistory = function (cityName) {
   $(".city-history-btns").remove();
   console.log(cityHistoryBtnsArr);
-  cityHistoryBtnsArr.push(cityName);
+  cityHistoryBtnsArr.unshift(cityName);
   for (var i = 0; i < cityHistoryBtnsArr.length; i++) {
     var cityHistoryBtns = $('<button></button>')
       .text(cityHistoryBtnsArr[i])
       .attr("id", 'city-history-btn' + i)
-      .addClass("city-history-btns btn btn-secondary col-9 p-2")
-    cityHistory.append(cityHistoryBtns);
+      .addClass("city-history-btns btn btn-secondary col-9 p-2") 
+      cityHistory.append(cityHistoryBtns);
   }
+
+  saveHistory();
 }
 
 var printCurrentWeather = function (cityName, currentTemp, currentWind, currentHumidity, currentWeatherType) {
@@ -36,7 +38,6 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
     .attr("id", "current-weather-type")
 
   if (currentWeatherType == "Clouds") {
-    console.log("cloudy")
     var cloudyIcon = $('<ion-icon name="cloudy-outline"></ion-icon>')
     currentWeatherTypePrint.append(cloudyIcon);
   } else if (currentWeatherType == "Rain") {
@@ -56,7 +57,6 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
 
 
 var getLocation = function(cityInput) {
-  console.log(cityInput.val());
   var cityName = cityInput.val();
   populateCityHistory(cityName);
   fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
@@ -88,7 +88,6 @@ var getData = function (lat,lon,cityNameData) {
       const currentWind = data.current.wind_speed;
       const currentHumidity = data.current.humidity;
       const currentWeatherType = data.current.weather[0].main;
-      console.log(cityNameData, currentTemp, currentWind, currentHumidity, currentWeatherType)
       printCurrentWeather(cityNameData, currentTemp, currentWind, currentHumidity, currentWeatherType);
 
       for(var i = 1; i < 6; i++) {
@@ -101,18 +100,17 @@ var getData = function (lat,lon,cityNameData) {
         year: "numeric"
       }
       var finalDate = utcDate.toLocaleDateString("en-US", options);
-      const currentTemp = data.daily[i].temp.day;
-      const currentWind = data.daily[i].wind_speed;
+      const currentTemp = parseInt(data.daily[i].temp.day);
+      const currentWind = parseInt(data.daily[i].wind_speed);
       const currentHumidity = data.daily[i].humidity;
       const currentWeatherType = data.daily[i].weather[0].main;
-      console.log(utcDate, currentTemp, currentWind, currentHumidity, currentWeatherType)
       createForecastCards(finalDate, currentTemp, currentWind, currentHumidity, currentWeatherType);
       }
     })
 }
 
 var createForecastCards = function (finalDate, currentTemp, currentWind, currentHumidity, currentWeatherType, containerChildren, cardContainer) {
-
+  
   var cardContainer = $('<li class="col">')
     .addClass("card-container")
   var date = $('<strong>' + finalDate + '</strong>')
@@ -146,8 +144,45 @@ var createForecastCards = function (finalDate, currentTemp, currentWind, current
   }
 
 
+var saveHistory = function () {
+  localStorage.setItem("city-history", JSON.stringify(cityHistoryBtnsArr));
+}
+
+var loadHistory = function () {
+  var savedHistory = localStorage.getItem("city-history");
+
+  if(!savedHistory) {
+    return false;
+  }
+
+  console.log("Found Saved History!");
+
+  savedHistory = JSON.parse(savedHistory);
+
+  for(var i = 0; i < savedHistory.length; i++) {
+    cityHistoryBtnsArr[i] = (savedHistory[i]);
+  }
+
+  for (var i = 0; i < cityHistoryBtnsArr.length; i++) {
+    var cityHistoryBtns = $('<button></button>')
+      .text(cityHistoryBtnsArr[i])
+      .attr("id", 'city-history-btn' + i)
+      .addClass("city-history-btns btn btn-secondary col-9 p-2") 
+      cityHistory.append(cityHistoryBtns);
+  }
+}
+
 $("#search-btn").on("click", function() {
   $(".card-container").remove();
   getLocation(cityInput);
-  
 });
+
+$("#city-history").on("click", function(event) {
+  var value = event.target.innerText.trim();
+  $('.search-bar').val(value);
+  var containerChildren = forecastCardsSection.children();
+  containerChildren.remove();
+  getLocation(cityInput);
+});
+
+loadHistory();
