@@ -62,7 +62,7 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
 var getLocation = function(cityInput) {
   var cityName = cityInput.val();
   populateCityHistory(cityName);
-  fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
+  fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
   .then(response => {
     return response.json()
   })
