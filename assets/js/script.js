@@ -9,12 +9,15 @@ var cityInput = $('#search-bar');
 var populateCityHistory = function (cityName) {
   $(".city-history-btns").remove();
   console.log(cityHistoryBtnsArr);
-  cityHistoryBtnsArr.unshift(cityName);
+  if(cityName !== $('.city-history').children().innerText) {
+    cityHistoryBtnsArr.unshift(cityName);
+  }
+  
   for (var i = 0; i < cityHistoryBtnsArr.length; i++) {
     var cityHistoryBtns = $('<button></button>')
       .text(cityHistoryBtnsArr[i])
       .attr("id", 'city-history-btn' + i)
-      .addClass("city-history-btns btn btn-secondary col-9 p-2") 
+      .addClass("city-history-btns btn btn-secondary col-10 ") 
       cityHistory.append(cityHistoryBtns);
   }
 
@@ -178,11 +181,19 @@ $("#search-btn").on("click", function() {
 });
 
 $("#city-history").on("click", function(event) {
+  $(".city-history-btns").remove();
   var value = event.target.innerText.trim();
   $('.search-bar').val(value);
   var containerChildren = forecastCardsSection.children();
   containerChildren.remove();
   getLocation(cityInput);
 });
+
+$("#clear-btn").click(function() {
+  cityHistoryBtnsArr = [];
+  saveHistory();
+  populateCityHistory();
+});
+  
 
 loadHistory();

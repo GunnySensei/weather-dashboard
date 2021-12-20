@@ -8,6 +8,7 @@ body{
     height: auto;
     margin: 0;
     margin-top: 0;
+    background-color: beige;
 }
 
 .jumbotron {
@@ -20,8 +21,6 @@ body{
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
 }
 
-.jumbotron h1 {
-}
 
 .full-board {
     border: 5px, solid, black;
@@ -31,8 +30,8 @@ body{
 .details-board {
     border: 3px solid black;
     height: 50vh;
+    font-size: xx-large;
 }
-
 .forecast-board {
     height: 50vh;
     padding: 0;
@@ -42,10 +41,13 @@ body{
     list-style-type: none;
     margin: 10px;
     border: 2px solid black;
+    background-color: darkgrey;
+    color: azure;
 }
 
 .city-search {
     flex-direction: column;
+    align-items: center;
     height: 100vh;
     text-align: center;
 }
@@ -55,10 +57,15 @@ body{
 }
 
 .search-bar {
-    margin-left: 10px;
+    margin-left: 0px;
     margin-bottom: 50px;
 }
 
 .city-history {
-    margin-left: 10px;
+    margin-left: 28px;
+}
+
+.btn {
+    font-size: small;
+    margin-bottom: 30px;
 }
