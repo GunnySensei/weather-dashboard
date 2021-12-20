@@ -62,14 +62,14 @@ var printCurrentWeather = function (cityName, currentTemp, currentWind, currentH
 var getLocation = function(cityInput) {
   var cityName = cityInput.val();
   populateCityHistory(cityName);
-  fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=3a936e1ee5ee6b0594bbd2ef44b89c3c')
+  fetch('https://api.opencagedata.com/geocode/v1/json?q=' + cityName + '&key=03629b132abc454eadfbd6bcd074abf8')
   .then(response => {
     return response.json()
   })
   .then(data => {
-    const lat = data[0].lat;
-    const lon = data[0].lon;
-    const cityNameData = data[0].name;
+    const lat = data.results[0].bounds.northeast.lat;
+    const lon = data.results[0].bounds.northeast.lng;
+    const cityNameData = data.results[0].components.city;
     console.log(lat);
     console.log(lon);
 
